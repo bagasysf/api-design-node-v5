@@ -60,7 +60,7 @@ export const tags = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
-  (table) => [unique().on(table.userId, table.name)]
+  (table) => [unique().on(table.userId, table.name)],
 )
 
 export const habitTags = pgTable('habit_tags', {
@@ -122,7 +122,9 @@ export const habitTagsRelations = relations(habitTags, ({ one }) => ({
 }))
 
 export type User = typeof users.$inferSelect
+export type NewUser = typeof users.$inferInsert
 export type Habit = typeof habits.$inferSelect
+export type NewHabit = typeof habits.$inferInsert
 export type Entry = typeof entries.$inferSelect
 export type Tag = typeof tags.$inferSelect
 export type HabitTag = typeof habitTags.$inferSelect

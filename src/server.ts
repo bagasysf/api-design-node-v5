@@ -6,6 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import { isTestEnv } from '../env.ts'
+import { errorHandler, type CustomError } from './middleware/errorHandler.ts'
 
 // Create Express application
 const app = express()
@@ -14,7 +15,7 @@ app.use(helmet())
 app.use(
   morgan('dev', {
     skip: () => isTestEnv(),
-  })
+  }),
 )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -31,6 +32,8 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/habits', habitRoutes)
+
+app.use(errorHandler)
 
 // Export the app for use in other modules (like tests)
 export { app }
